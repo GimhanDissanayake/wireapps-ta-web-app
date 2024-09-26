@@ -12,7 +12,7 @@ env:
   IMAGE: web-app # image name
   IMAGE_TAG: test # image tag
   GAR_ZONE: us-east1 # artifact registry zone
-  GAR_REPO: test # artifact registry repository
+  GAR_REPO: test-use1-nonprod-docker-repository	 # artifact registry repository
 
 jobs:
   setup-build-publish-deploy:
@@ -47,15 +47,15 @@ jobs:
     - name: Build
       run: |-
         docker build \
-          --tag "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$IMAGE_TAG"
-          .
+          --tag "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$IMAGE_TAG" .
+
     # Push the Docker image to Google Container Registry
     - name: Publish
       run: |-
         docker push "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$IMAGE_TAG"
 
-    # Deploy the Docker image to the GKE cluster
-    - name: Deploy
-      run: |-
-        kubectl apply -f deploy.yml
-        kubectl get pods
+    # # Deploy the Docker image to the GKE cluster
+    # - name: Deploy
+    #   run: |-
+    #     kubectl apply -f deploy.yml
+    #     kubectl get pods
