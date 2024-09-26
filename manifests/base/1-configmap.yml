@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-app
+data:
+  PORT: "8000"
+  API_HOST: "http://api-app.<namespace>.svc.cluster.local:8080"

@@ -10,7 +10,6 @@ env:
   GKE_CLUSTER: test-use1-nonprod-gke    # cluster name
   GKE_ZONE: us-east1-b   # cluster zone
   IMAGE: web-app # image name
-  IMAGE_TAG: test # image tag
   GAR_ZONE: us-east1 # artifact registry zone
   GAR_REPO: test-use1-nonprod-docker-repository	 # artifact registry repository
 
@@ -52,16 +51,17 @@ jobs:
     # Build the Docker image
     - name: Build
       run: |-
+        IMAGE_TAG=$(date +"%Y%m%d-%H%M%S")
         docker build \
           --tag "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$IMAGE_TAG" .
 
     # Push the Docker image to Google Container Registry
     - name: Publish
       run: |-
-        docker push "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$IMAGE_TAG"
+        docker push "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$IMAGE_TAG"  
 
-    # # Deploy the Docker image to the GKE cluster
-    # - name: Deploy
-    #   run: |-
-    #     kubectl apply -f deploy.yml
-    #     kubectl get pods
+    # Deploy the Docker image to the GKE cluster
+    - name: Deploy
+      run: |-
+        sed -i "s|DOCKER_IMAGE|"$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$IMAGE_TAG"|g" manifests/base/*-deployment.yml
+        kubectl apply -k manifests/overlays/nonprod
