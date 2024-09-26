@@ -17,7 +17,7 @@ spec:
           image: DOCKER_IMAGE
           envFrom:
           - configMapRef:
-              name: web-app-configs
+              name: web-app
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
