@@ -62,5 +62,5 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        sed -i "s|DOCKER_IMAGE|"$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$IMAGE_TAG"|g" manifests/base/*-deployment.yml
+        sed -i "s|DOCKER_IMAGE|"$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$GITHUB_SHA"|g" manifests/base/*-deployment.yml
         kubectl apply -k manifests/overlays/nonprod
