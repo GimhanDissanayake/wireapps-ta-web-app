@@ -51,15 +51,13 @@ jobs:
     # Build the Docker image
     - name: Build
       run: |-
-        IMAGE_TAG=$(date +"%Y%m%d-%H%M%S")
-        echo "::set-output name=image_tag::$IMAGE_TAG"
         docker build \
-          --tag "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$IMAGE_TAG" .
+          --tag "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$GITHUB_SHA" .
 
     # Push the Docker image to Google Container Registry
     - name: Publish
       run: |-
-        docker push "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:${{ steps.build_step.outputs.image_tag }}"  
+        docker push "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$GITHUB_SHA"
 
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
