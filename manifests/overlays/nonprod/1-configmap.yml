@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: web-app
 data:
-  API_HOST: "http://api-app.nonprod.svc.cluster.local:8080"
+  API_HOST: "http://api-app.development.svc.cluster.local:8080"
