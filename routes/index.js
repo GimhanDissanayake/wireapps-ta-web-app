@@ -27,4 +27,11 @@ router.get('/', function(req, res, next) {
   );
 });
 
+// health check
+router.get('/health', function(req, res, next) {
+  return res.json({
+    "message": "Wireapps TA web app health"
+  });
+});
+
 module.exports = router;
